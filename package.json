@@ -1,13 +1,20 @@
 {
-  "name": "my-v0-project",
-  "version": "0.1.0",
+  "name": "liapin-space-site",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "fetch": "echo 'Content already in .leadcms/content - ready to build'",
-    "build": "pnpm run fetch && next build",
+    "pull": "leadcms pull",
+    "watch": "leadcms watch",
+    "livepreview": "pnpm run dev",
+    "generate:env": "node ./scripts/generate-env-js.mjs",
+    "build": "pnpm run pull && next build",
     "dev": "next dev",
     "lint": "eslint .",
-    "start": "next start"
+    "start": "next start",
+    "docker:build": "pnpm run build && docker build -t liapin_space_site .",
+    "docker:run": "docker container rm liapin_space_site --force || true && docker run -p 3000:80 --env-file .env --name liapin_space_site liapin_space_site",
+    "docker:preview:build": "docker build -f preview/Dockerfile -t liapin_space_site_preview .",
+    "docker:preview:run": "docker container rm liapin_space_site_preview --force || true && docker run -p 3000:80 --name liapin_space_site_preview --env-file .env liapin_space_site_preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -39,7 +46,6 @@
     "@radix-ui/react-toggle": "1.1.1",
     "@radix-ui/react-toggle-group": "1.1.1",
     "@radix-ui/react-tooltip": "1.1.6",
-    "@vercel/analytics": "latest",
     "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

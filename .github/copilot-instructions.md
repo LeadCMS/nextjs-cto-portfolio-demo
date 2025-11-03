@@ -209,7 +209,6 @@ const config = loadContentConfigStrict('metadata', locale) as {
   siteDescription: string
   language: string
   theme: string
-  analytics?: { vercel?: boolean }
 }
 ```
 

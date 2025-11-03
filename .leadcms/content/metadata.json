@@ -4,9 +4,6 @@
   "siteDescription": "Founding CTO and software architect with 20 years of experience in web, cloud, DevOps, and AI-driven product innovation.",
   "siteUrl": "https://liapin.space",
   "theme": "dark",
-  "analytics": {
-    "vercel": true
-  },
   "id": 29,
   "createdAt": "2025-11-03T15:00:22.356932Z",
   "updatedAt": "2025-11-03T15:16:19.493588Z",

@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
 import { loadContentConfigStrict } from "@leadcms/sdk"
 import "./globals.css"
 
@@ -16,7 +15,6 @@ export function generateMetadata(): Metadata {
       siteDescription: string
       language: string
       theme: string
-      analytics?: { vercel?: boolean }
     }
     
     return {
@@ -44,7 +42,6 @@ export default function RootLayout({
     siteDescription: string
     language: string
     theme: string
-    analytics?: { vercel?: boolean }
   }
   
   try {
@@ -60,7 +57,6 @@ export default function RootLayout({
     <html lang={metadata.language} className={metadata.theme}>
       <body className={`${inter.className} font-sans antialiased`}>
         {children}
-        {metadata.analytics?.vercel && <Analytics />}
       </body>
     </html>
   )

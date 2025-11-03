@@ -1,0 +1,52 @@
+{
+  "fields": [
+    {
+      "name": "name",
+      "label": "Your Name",
+      "type": "text",
+      "placeholder": "John Doe",
+      "required": true
+    },
+    {
+      "name": "email",
+      "label": "Your Email",
+      "type": "email",
+      "placeholder": "john@example.com",
+      "required": true
+    },
+    {
+      "name": "subject",
+      "label": "Subject",
+      "type": "text",
+      "placeholder": "Project inquiry",
+      "required": true
+    },
+    {
+      "name": "message",
+      "label": "Message",
+      "type": "textarea",
+      "placeholder": "Tell me about your project or inquiry...",
+      "rows": 6,
+      "required": true
+    }
+  ],
+  "submitButton": {
+    "text": "Send Message",
+    "loadingText": "Sending..."
+  },
+  "successMessage": "Thank you! Your message has been sent.",
+  "id": 25,
+  "createdAt": "2025-11-03T15:00:21.555569Z",
+  "title": "Contact Form Configuration",
+  "description": "Contact form field definitions, submit button text, and success message configuration.",
+  "coverImageUrl": "/media/common/contact-form.jpg",
+  "coverImageAlt": "Contact Form Configuration",
+  "slug": "contact-us-form",
+  "type": "component",
+  "author": "Peter L.",
+  "language": "en",
+  "category": "",
+  "tags": [],
+  "allowComments": false,
+  "publishedAt": "2024-01-01T00:00:00Z"
+}

@@ -1,0 +1,22 @@
+{
+  "text": "Built with",
+  "link": {
+    "text": "LeadCMS.ai",
+    "href": "https://leadcms.ai"
+  },
+  "suffix": "- an example of basic portfolio site built with LeadCMS.",
+  "id": 26,
+  "createdAt": "2025-11-03T15:00:21.768652Z",
+  "title": "Site Footer Configuration",
+  "description": "Footer component configuration including attribution text and links.",
+  "coverImageUrl": "/media/common/site-footer.jpg",
+  "coverImageAlt": "Site Footer Configuration",
+  "slug": "footer",
+  "type": "component",
+  "author": "Peter L.",
+  "language": "en",
+  "category": "",
+  "tags": [],
+  "allowComments": false,
+  "publishedAt": "2024-01-01T00:00:00Z"
+}

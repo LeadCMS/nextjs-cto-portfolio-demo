@@ -1,0 +1,24 @@
+{
+  "siteName": "CTO Portfolio",
+  "siteTitle": "CTO Portfolio | Technology Leadership & Innovation",
+  "siteDescription": "Founding CTO and software architect with 20 years of experience in web, cloud, DevOps, and AI-driven product innovation.",
+  "siteUrl": "https://liapin.space",
+  "theme": "dark",
+  "analytics": {
+    "vercel": true
+  },
+  "id": 29,
+  "createdAt": "2025-11-03T15:00:22.356932Z",
+  "title": "Site Metadata Configuration",
+  "description": "Global site metadata including site name, title, description, and analytics configuration.",
+  "coverImageUrl": "/media/common/site-metadata.jpg",
+  "coverImageAlt": "Site Metadata Configuration",
+  "slug": "metadata",
+  "type": "component",
+  "author": "Peter L.",
+  "language": "en",
+  "category": "",
+  "tags": [],
+  "allowComments": false,
+  "publishedAt": "2024-01-01T00:00:00Z"
+}

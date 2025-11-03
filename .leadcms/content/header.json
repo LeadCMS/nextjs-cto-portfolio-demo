@@ -1,0 +1,30 @@
+{
+  "logo": {
+    "text": "CTO Portfolio",
+    "href": "/"
+  },
+  "navigation": [
+    {
+      "label": "Projects",
+      "href": "#projects"
+    },
+    {
+      "label": "Contact",
+      "href": "#contact"
+    }
+  ],
+  "id": 27,
+  "createdAt": "2025-11-03T15:00:21.961948Z",
+  "title": "Site Header Configuration",
+  "description": "Header component configuration including logo and navigation menu items.",
+  "coverImageUrl": "/media/common/site-header.jpg",
+  "coverImageAlt": "Site Header Configuration",
+  "slug": "header",
+  "type": "component",
+  "author": "Peter L.",
+  "language": "en",
+  "category": "",
+  "tags": [],
+  "allowComments": false,
+  "publishedAt": "2024-01-01T00:00:00Z"
+}

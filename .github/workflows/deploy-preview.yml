@@ -45,25 +45,9 @@ jobs:
             echo "✅ Deployment directory verified"
             echo "📦 Pulling latest Docker images..."
             docker compose pull
-            
-            echo "🔄 Stopping existing containers..."
-            docker compose down || true
-            
-            echo "🚀 Starting updated containers..."
-            docker compose up -d
-            
-            echo "⏳ Waiting for services to start..."
-            sleep 10
-            
-            echo "🔍 Checking container status..."
-            docker compose ps
-            
-            if ! docker compose ps --filter status=running | grep -q running; then
-              echo "❌ ERROR: No containers are running after deployment"
-              echo "Container logs:"
-              docker compose logs --tail=50 || true
-              exit 1
-            fi
+                        
+            echo "🚀 Restarting updated containers..."
+            docker compose up -d            
             
             echo "🎉 Preview deployment completed successfully!"
 

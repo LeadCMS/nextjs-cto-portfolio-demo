@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/leadcms-nextjs-portfolio-preview
+  IMAGE_NAME: leadcms/nextjs-cto-portfolio-preview
 
 jobs:
   build-static-site:
@@ -42,7 +42,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: static-site-${{ github.ref_name }}
+          name: nextjs-cto-portfolio-static-${{ github.ref_name }}
           path: out/
 
       - name: Upload build summary
@@ -96,7 +96,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           build-args: |
             LEADCMS_URL=${{ secrets.LEADCMS_URL }}
-            LEADCMS_API_KEY=${{ secrets.LEADCMS_API_KEY }}
             LEADCMS_DEFAULT_LANGUAGE=${{ secrets.LEADCMS_DEFAULT_LANGUAGE || 'en' }}
           cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
           cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max

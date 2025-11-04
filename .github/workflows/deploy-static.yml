@@ -17,16 +17,32 @@ jobs:
       - name: Download static site artifact
         uses: actions/download-artifact@v4
         with:
-          name: nextjs-cto-portfolio-static-main
+          name: nextjs-cto-portfolio-static-${{ github.ref_name }}
           path: ./static-site
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
 
-      - name: Create deployment archive
+      - name: Verify and create deployment archive
         run: |
+          echo "🔍 Checking downloaded artifact..."
+          if [ ! -d "./static-site" ] || [ ! "$(ls -A ./static-site)" ]; then
+            echo "❌ ERROR: Static site artifact is empty or missing"
+            echo "Available files:"
+            ls -la ./ || true
+            ls -la ./static-site/ || true
+            exit 1
+          fi
+          
+          echo "✅ Artifact downloaded successfully"
+          echo "📊 Files in artifact: $(find ./static-site -type f | wc -l) files"
+          echo "📊 Total size: $(du -sh ./static-site | cut -f1)"
+          
+          echo "📦 Creating deployment archive..."
           cd static-site
           tar -czf ../nextjs-cto-portfolio-static-${{ github.ref_name }}.tar.gz .
           cd ..
+          
+          echo "✅ Archive created successfully"
           ls -la nextjs-cto-portfolio-static-${{ github.ref_name }}.tar.gz
 
       - name: Upload deployment archive via SCP
@@ -36,7 +52,8 @@ jobs:
           username: ${{ secrets.SSH_USER_NAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "nextjs-cto-portfolio-static-${{ github.ref_name }}.tar.gz"
-          target: "${{ secrets.STATIC_TEMP_PATH }}"
+          target: "${{ secrets.STATIC_TEMP_PATH }}/"
+          overwrite: true
 
       - name: Deploy static site
         uses: appleboy/ssh-action@v1.0.3
@@ -49,13 +66,42 @@ jobs:
           username: ${{ secrets.SSH_USER_NAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: DEPLOY_PATH,TEMP_PATH,BRANCH_NAME
+          script_stop: true
           script: |
-            # Remove all existing files and extract new ones
-            sudo rm -rf ${DEPLOY_PATH}/*;
-            sudo tar -xzf ${TEMP_PATH}/nextjs-cto-portfolio-static-${BRANCH_NAME}.tar.gz -C ${DEPLOY_PATH}/;
+            set -e  # Exit immediately if any command fails
             
-            # Clean up temp archive
-            rm -f ${TEMP_PATH}/nextjs-cto-portfolio-static-${BRANCH_NAME}.tar.gz;
+            echo "🔍 Checking for deployment archive..."
+            ARCHIVE_FILE="${TEMP_PATH}/nextjs-cto-portfolio-static-${BRANCH_NAME}.tar.gz"
+            
+            if [ ! -f "$ARCHIVE_FILE" ]; then
+              echo "❌ ERROR: Deployment archive not found at: $ARCHIVE_FILE"
+              echo "Available files in temp directory:"
+              ls -la "${TEMP_PATH}/" || echo "Temp directory not accessible"
+              exit 1
+            fi
+            
+            echo "✅ Archive found: $ARCHIVE_FILE"
+            echo "📊 Archive size: $(du -sh "$ARCHIVE_FILE" | cut -f1)"
+                        
+            echo "🧹 Removing existing files..."
+            sudo rm -rf ${DEPLOY_PATH}/*
+            
+            echo "📦 Extracting new deployment..."
+            sudo tar -xzf "$ARCHIVE_FILE" -C "${DEPLOY_PATH}/"
+            
+            echo "🔍 Verifying extraction..."
+            if [ ! "$(ls -A ${DEPLOY_PATH})" ]; then
+              echo "❌ ERROR: Deployment directory is empty after extraction"
+              exit 1
+            fi
+            
+            echo "✅ Deployment extracted successfully"
+            echo "📊 Deployed files: $(find ${DEPLOY_PATH} -type f | wc -l) files"
+            
+            echo "🧹 Cleaning up temp archive..."
+            rm -f "$ARCHIVE_FILE"
+            
+            echo "🎉 Deployment completed successfully!"
 
       - name: Deployment Summary
         run: |

@@ -1,0 +1,11 @@
+# Production Site - Allow Crawlers
+# This is the default robots.txt for production deployments
+
+User-agent: *
+Allow: /
+
+# Common paths to disallow (customize as needed)
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /private/

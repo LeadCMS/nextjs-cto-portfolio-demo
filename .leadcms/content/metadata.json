@@ -1,12 +1,41 @@
 {
-  "siteName": "CTO Portfolio",
-  "siteTitle": "CTO Portfolio | Technology Leadership & Innovation",
-  "siteDescription": "Founding CTO and software architect with 20 years of experience in web, cloud, DevOps, and AI-driven product innovation.",
-  "siteUrl": "https://liapin.space",
-  "theme": "dark",
+  "siteMetadata": {
+    "baseUrl": "https://liapin.space",
+    "title": {
+      "template": "CTO Portfolio | %s",
+      "default": "CTO Portfolio | Technology Leadership & Innovation"
+    },
+    "description": "Founding CTO and software architect with 20 years of experience in web, cloud, DevOps, and AI-driven product innovation.",
+    "generator": "LeadCMS",
+    "icons": {
+      "icon": [
+        {
+          "url": "/favicon.ico",
+          "sizes": "32x32"
+        }
+      ]
+    },
+    "openGraph": {
+      "type": "website",
+      "siteName": "CTO Portfolio",
+      "title": "CTO Portfolio | Technology Leadership & Innovation",
+      "description": "Founding CTO and software architect with 20 years of experience in web, cloud, DevOps, and AI-driven product innovation.",
+      "url": "https://liapin.space",
+      "locale": "en"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "CTO Portfolio | Technology Leadership & Innovation",
+      "description": "Founding CTO and software architect with 20 years of experience in web, cloud, DevOps, and AI-driven product innovation."
+    },
+    "robots": {
+      "index": true,
+      "follow": true
+    }
+  },
   "id": 29,
   "createdAt": "2025-11-03T15:00:22.356932Z",
-  "updatedAt": "2025-11-04T04:48:50.193644Z",
+  "updatedAt": "2025-11-04T15:18:10.176157Z",
   "title": "Site Metadata Configuration",
   "description": "Global site metadata including site name, title, description, and analytics configuration.",
   "coverImageUrl": "",

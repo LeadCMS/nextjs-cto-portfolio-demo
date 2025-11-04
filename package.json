@@ -26,6 +26,7 @@
     "dev": "next dev --webpack",
     "lint": "eslint .",
     "start": "next start",
+    "serve": "npx serve out -p 3000",
     "docker:build": "pnpm run build && docker build -t leadcms-cto-portfolio-demo .",
     "docker:run": "docker container rm leadcms-cto-portfolio-demo --force || true && docker run -p 3000:80 --env-file .env --name leadcms-cto-portfolio-demo leadcms-cto-portfolio-demo",
     "docker:preview:build": "docker build -f preview/Dockerfile -t leadcms-cto-portfolio-preview .",

@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { loadContentConfigStrict } from "@leadcms/sdk"
+import { ThemeSwitcher } from "@/components/theme-switcher"
 
 interface HeaderProps {
   userUid?: string | null
@@ -40,6 +41,7 @@ export function Header({ userUid }: HeaderProps) {
                 {item.label}
               </Link>
             ))}
+            <ThemeSwitcher />
           </div>
         </div>
       </div>

@@ -1,4 +1,6 @@
+import type { Metadata } from "next"
 import { getAllContentSlugsForLocale, getCMSContentBySlugForLocale, extractUserUidFromSlug } from "@leadcms/sdk"
+import { generatePageMetadata } from "@/lib/metadata"
 import { getTemplate } from "@/components/templates"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -20,6 +22,24 @@ interface PageProps {
   params: Promise<{
     slug: string[]
   }>
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
+  const resolvedParams = await params
+  const slug = resolvedParams.slug.join("/")
+  
+  // Extract userUid from slug if it's a preview slug
+  const userUid = extractUserUidFromSlug(slug)
+  const includeDrafts = !!userUid
+  
+  const cmsContent = getCMSContentBySlugForLocale(slug, locale, includeDrafts)
+  
+  if (!cmsContent) {
+    return {}
+  }
+
+  return generatePageMetadata(cmsContent, slug, userUid)
 }
 
 export default async function Page({ params }: PageProps) {

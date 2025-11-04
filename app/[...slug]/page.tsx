@@ -4,12 +4,13 @@ import { generatePageMetadata } from "@/lib/metadata"
 import { getTemplate } from "@/components/templates"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { pagesContentTypes } from "@/lib/constants"
 
 export function generateStaticParams() {
   const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
   
-  // Get published content
-  const publishedSlugs = getAllContentSlugsForLocale(locale)
+  // Get published content for page content types only (excludes components like header, footer, etc.)
+  const publishedSlugs = getAllContentSlugsForLocale(locale, pagesContentTypes)
     
   const staticParams = publishedSlugs.map((slug) => ({
     slug: slug.split("/"),

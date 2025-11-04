@@ -6,16 +6,16 @@
   "navigation": [
     {
       "label": "Projects",
-      "href": "#projects"
+      "href": "/#projects"
     },
     {
       "label": "Contact",
-      "href": "#contact"
+      "href": "/#contact"
     }
   ],
   "id": 27,
   "createdAt": "2025-11-03T15:00:21.961948Z",
-  "updatedAt": "2025-11-03T15:16:19.085065Z",
+  "updatedAt": "2025-11-04T15:42:03.831022Z",
   "title": "Site Header Configuration",
   "description": "Header component configuration including logo and navigation menu items.",
   "coverImageUrl": "",

@@ -1,6 +1,7 @@
 import React from "react"
 import DefaultTemplate from "./default-template"
 import ProjectTemplate from "./project-template"
+import NotFoundTemplate from "./not-found-template"
 import { CMSContent } from "@leadcms/sdk"
 
 export type TemplateComponent = (props: { 
@@ -14,6 +15,7 @@ export type TemplateComponent = (props: {
 export const templateRegistry: Record<string, TemplateComponent> = {
   project: ProjectTemplate,
   home: DefaultTemplate,
+  "not-found": NotFoundTemplate,
 }
 
 /**

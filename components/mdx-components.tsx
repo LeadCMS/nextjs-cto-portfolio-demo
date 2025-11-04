@@ -1,4 +1,4 @@
-import { HeroSection, ProjectCard, ProjectGrid, DynamicProjectGrid, ContactSection } from "./mdx"
+import { HeroSection, ProjectCard, ProjectGrid, DynamicProjectGrid, ContactSection, Button, NotFoundSection } from "./mdx"
 
 /**
  * Registry of all available MDX components
@@ -14,6 +14,8 @@ export function useMDXComponents(components: Record<string, any> = {}) {
     ProjectGrid,
     DynamicProjectGrid: (props: any) => <DynamicProjectGrid {...props} userUid={userUid} />,
     ContactSection,
+    Button,
+    NotFoundSection,
     // Allow overrides
     ...otherComponents,
   }

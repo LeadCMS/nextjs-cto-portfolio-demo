@@ -23,7 +23,7 @@
     "livepreview": "pnpm run dev",
     "generate:env": "node ./scripts/generate-env-js.mjs",
     "build": "pnpm run pull && next build",
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "lint": "eslint .",
     "start": "next start",
     "docker:build": "pnpm run build && docker build -t leadcms-cto-portfolio-demo .",

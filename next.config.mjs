@@ -1,13 +1,20 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  images: {
-    unoptimized: true,
-  },
-  // Enable static export for production
-  output: process.env.NODE_ENV === "production" ? "export" : undefined,
-}
+// next.config.ts
+import createMDX from '@next/mdx';
 
-export default nextConfig
+const withMDX = createMDX({ extension: /\.mdx?$/ });
+
+const nextConfig = {
+  typescript: { ignoreBuildErrors: true },
+  images: { unoptimized: true },
+  output: process.env.NODE_ENV === 'production' ? 'export' : undefined,
+
+  // Next 16: use `turbopack` (not `experimental.turbo`)
+  turbopack: {
+    resolveExtensions: ['.tsx', '.ts', '.jsx', '.js', '.mdx', '.md'],
+  },
+
+  // So you can import .mdx anywhere
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+};
+
+export default withMDX(nextConfig);

@@ -46,11 +46,11 @@ const variantClasses = {
     iconColor: "text-primary",
     button: "text-primary hover:text-primary",
   },
-  accent: {
-    card: "group hover:border-accent/50 transition-all duration-300",
-    iconBg: "bg-accent/10 group-hover:bg-accent/20",
-    iconColor: "text-accent",
-    button: "text-accent hover:text-accent",
+  "chart-2": {
+    card: "group hover:border-chart-2/50 transition-all duration-300",
+    iconBg: "bg-chart-2/10 group-hover:bg-chart-2/20",
+    iconColor: "text-chart-2",
+    button: "text-chart-2 hover:text-chart-2",
   },
   "chart-3": {
     card: "group hover:border-chart-3/50 transition-all duration-300",

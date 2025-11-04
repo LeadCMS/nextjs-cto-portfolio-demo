@@ -1,7 +1,15 @@
+// Declare window.__env for TypeScript
+declare global {
+  interface Window {
+    __env?: Record<string, string>
+  }
+}
+
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import Script from "next/script"
 import { ThemeProvider } from "@/components/theme-provider"
 
 import metadataJson from "@/.leadcms/content/metadata.json"
@@ -20,6 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <Script src="/__env.js" strategy="beforeInteractive" />
+      </head>
       <body className={`${inter.className} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"

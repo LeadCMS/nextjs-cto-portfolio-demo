@@ -19,6 +19,9 @@ yarn-error.log*
 # env files
 .env*
 
+# runtime env for browser
+/public/__env.js
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

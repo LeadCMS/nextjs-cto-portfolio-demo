@@ -7,64 +7,157 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { AlertCircle, CheckCircle } from "lucide-react"
+import { getEnvVar } from "@/lib/env"
+
+interface FormData {
+  firstName: string
+  lastName: string
+  email: string
+  company: string
+  message: string
+}
+
+interface FormState {
+  isSubmitting: boolean
+  isSuccess: boolean
+  isError: boolean
+  errorMessage: string
+}
 
 export function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: "",
+  const [formData, setFormData] = useState<FormData>({
+    firstName: "",
+    lastName: "",
     email: "",
-    subject: "",
+    company: "",
     message: "",
   })
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const [formState, setFormState] = useState<FormState>({
+    isSubmitting: false,
+    isSuccess: false,
+    isError: false,
+    errorMessage: "",
+  })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitting(true)
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    setFormState({
+      isSubmitting: true,
+      isSuccess: false,
+      isError: false,
+      errorMessage: "",
+    })
 
-    setIsSubmitted(true)
-    setIsSubmitting(false)
+    try {
+      const apiUrl = getEnvVar("NEXT_PUBLIC_LEADCMS_URL")
 
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false)
-      setFormData({ name: "", email: "", subject: "", message: "" })
-    }, 3000)
+      if (!apiUrl) {
+        throw new Error("API URL not configured. Please check environment variables.")
+      }
+
+      const formDataToSubmit = new FormData()
+      formDataToSubmit.append("file", "")
+      formDataToSubmit.append("firstName", formData.firstName)
+      formDataToSubmit.append("lastName", formData.lastName)
+      formDataToSubmit.append("company", formData.company)
+      formDataToSubmit.append("subject", "Contact Form Submission")
+      formDataToSubmit.append("message", formData.message)
+      formDataToSubmit.append("email", formData.email)
+      formDataToSubmit.append("language", navigator.language || "en")
+
+      const response = await fetch(`${apiUrl}/api/contact-us`, {
+        method: "POST",
+        body: formDataToSubmit,
+      })
+
+      if (!response.ok) {
+        throw new Error(`Server responded with ${response.status}`)
+      }
+
+      setFormState({
+        isSubmitting: false,
+        isSuccess: true,
+        isError: false,
+        errorMessage: "",
+      })
+
+      // Reset form after successful submission
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        company: "",
+        message: "",
+      })
+    } catch (error) {
+      setFormState({
+        isSubmitting: false,
+        isSuccess: false,
+        isError: true,
+        errorMessage: error instanceof Error ? error.message : "An unknown error occurred",
+      })
+    }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { id, value } = e.target
+
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [id === "first-name" ? "firstName" : id === "last-name" ? "lastName" : id]: value,
     }))
   }
 
-  if (isSubmitted) {
+  if (formState.isSuccess) {
     return (
-      <div className="p-6 border border-primary/50 rounded-lg bg-primary/5">
-        <p className="text-primary font-medium">Thank you! Your message has been sent.</p>
+      <div className="flex flex-col items-center justify-center space-y-3 text-center p-6 border border-primary/50 rounded-lg bg-primary/5">
+        <CheckCircle className="h-12 w-12 text-green-500" />
+        <h3 className="text-xl font-semibold">Message sent successfully!</h3>
+        <p className="text-muted-foreground">Thank you for contacting me. I'll get back to you soon.</p>
+        <Button
+          onClick={() => setFormState((prev) => ({ ...prev, isSuccess: false }))}
+          className="mt-4"
+        >
+          Send Another Message
+        </Button>
       </div>
     )
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {formState.isError && (
+        <div className="bg-destructive/10 p-3 rounded-md flex items-start gap-2 text-destructive">
+          <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
+          <div>
+            <p className="font-medium">Error sending message</p>
+            <p className="text-sm">{formState.errorMessage}</p>
+          </div>
+        </div>
+      )}
+
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <Label htmlFor="name">Your Name</Label>
-          <Input id="name" name="name" placeholder="John Doe" value={formData.name} onChange={handleChange} required />
+          <Label htmlFor="first-name">First Name</Label>
+          <Input 
+            id="first-name" 
+            placeholder="John" 
+            value={formData.firstName} 
+            onChange={handleChange} 
+            required 
+          />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email">Your Email</Label>
+          <Label htmlFor="last-name">Last Name</Label>
           <Input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="john@example.com"
-            value={formData.email}
+            id="last-name"
+            placeholder="Doe"
+            value={formData.lastName}
             onChange={handleChange}
             required
           />
@@ -72,22 +165,33 @@ export function ContactForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="subject">Subject</Label>
+        <Label htmlFor="email">Email</Label>
         <Input
-          id="subject"
-          name="subject"
-          placeholder="Project inquiry"
-          value={formData.subject}
+          id="email"
+          type="email"
+          placeholder="john@example.com"
+          value={formData.email}
           onChange={handleChange}
           required
         />
       </div>
 
       <div className="space-y-2">
+        <Label htmlFor="company">Company (Optional)</Label>
+        <Input
+          id="company"
+          placeholder="Your company name"
+          value={formData.company}
+          onChange={handleChange}
+        />
+      </div>
+
+
+
+      <div className="space-y-2">
         <Label htmlFor="message">Message</Label>
         <Textarea
           id="message"
-          name="message"
           placeholder="Tell me about your project or inquiry..."
           rows={6}
           value={formData.message}
@@ -96,8 +200,8 @@ export function ContactForm() {
         />
       </div>
 
-      <Button type="submit" size="lg" disabled={isSubmitting}>
-        {isSubmitting ? "Sending..." : "Send Message"}
+      <Button type="submit" size="lg" disabled={formState.isSubmitting} className="w-full">
+        {formState.isSubmitting ? "Sending..." : "Send Message"}
       </Button>
     </form>
   )

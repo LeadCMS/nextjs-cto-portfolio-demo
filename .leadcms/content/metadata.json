@@ -11,9 +11,12 @@
       "icon": [
         {
           "url": "/favicon.ico",
-          "sizes": "32x32"
+          "sizes": "32x32",
+          "type": "image/x-icon"
         }
-      ]
+      ],
+      "shortcut": "/favicon.ico",
+      "apple": "/favicon.ico"
     },
     "openGraph": {
       "type": "website",
@@ -35,7 +38,7 @@
   },
   "id": 29,
   "createdAt": "2025-11-03T15:00:22.356932Z",
-  "updatedAt": "2025-11-04T15:18:10.176157Z",
+  "updatedAt": "2025-11-04T16:36:19.844099Z",
   "title": "Site Metadata Configuration",
   "description": "Global site metadata including site name, title, description, and analytics configuration.",
   "coverImageUrl": "",

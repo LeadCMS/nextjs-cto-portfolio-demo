@@ -70,9 +70,9 @@ export function ProjectCard({
         <Link href={href}>
           <Button
             variant="ghost"
-            className={`group/btn p-0 h-auto font-normal text-sm ${classes.button}`}
+            className={`group/btn py-3 px-2 min-h-[44px] font-normal text-sm cursor-pointer ${classes.button}`}
           >
-            Learn more
+            Learn about {title}
             <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
           </Button>
         </Link>

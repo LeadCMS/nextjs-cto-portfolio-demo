@@ -68,7 +68,7 @@ export default function ProjectTemplate({ content, userUid }: ProjectTemplatePro
           {content.externalLink && (
             <a href={content.externalLink} target="_blank" rel="noopener noreferrer">
               <Button 
-                className={`w-full sm:w-auto group ${
+                className={`w-full sm:w-auto group cursor-pointer ${
                   content.badgeVariant === "primary" ? "bg-primary hover:bg-primary/90 text-primary-foreground" :
                   content.badgeVariant === "accent" ? "bg-accent hover:bg-accent/90 text-accent-foreground" :
                   content.badgeVariant === "chart-3" ? "bg-chart-3 hover:bg-chart-3/90 text-foreground" :
@@ -85,7 +85,7 @@ export default function ProjectTemplate({ content, userUid }: ProjectTemplatePro
           )}
           {content.githubLink && (
             <a href={content.githubLink} target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" className="w-full sm:w-auto group">
+              <Button variant="outline" className="w-full sm:w-auto group cursor-pointer">
                 Explore on GitHub
                 <ExternalLink className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Button>

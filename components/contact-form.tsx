@@ -200,7 +200,12 @@ export function ContactForm() {
         />
       </div>
 
-      <Button type="submit" size="lg" disabled={formState.isSubmitting} className="w-full">
+      <Button 
+        type="submit" 
+        size="lg" 
+        disabled={formState.isSubmitting} 
+        className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+      >
         {formState.isSubmitting ? "Sending..." : "Send Message"}
       </Button>
     </form>

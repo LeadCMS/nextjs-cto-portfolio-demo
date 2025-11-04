@@ -55,7 +55,7 @@ export function HeroSection({
             <p className="text-sm md:text-base text-muted-foreground italic leading-relaxed">
               "{quote}"
             </p>
-            <p className="text-xs text-muted-foreground/60 mt-2">
+            <p className="text-xs text-muted-foreground mt-2">
               - {quoteAuthor}
             </p>
           </div>

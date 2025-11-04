@@ -36,7 +36,7 @@ export function Header({ userUid }: HeaderProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors py-2 px-1 min-h-[44px] flex items-center"
               >
                 {item.label}
               </Link>

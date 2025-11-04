@@ -32,7 +32,7 @@ export function Footer({ userUid }: FooterProps) {
             href={config.link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-accent hover:underline"
+            className="text-foreground underline hover:no-underline transition-all"
           >
             {config.link.text}
           </a>{" "}

@@ -130,14 +130,14 @@ export function DynamicProjectGrid({ title = "Featured Projects", maxProjects = 
                     <div className="flex gap-2 flex-wrap">
                       {project.externalLink && (
                         <Link href={project.externalLink} target="_blank" rel="noopener noreferrer">
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" className="cursor-pointer">
                             Visit Site
                           </Button>
                         </Link>
                       )}
                       {project.githubLink && (
                         <Link href={project.githubLink} target="_blank" rel="noopener noreferrer">
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" className="cursor-pointer">
                             GitHub
                           </Button>
                         </Link>
@@ -149,9 +149,9 @@ export function DynamicProjectGrid({ title = "Featured Projects", maxProjects = 
                   <Link href={`/${project.slug}`}>
                     <Button
                       variant="ghost"
-                      className={`group/btn p-0 h-auto font-normal text-sm ${classes.button}`}
+                      className={`group/btn py-3 px-2 min-h-[44px] font-normal text-sm cursor-pointer ${classes.button}`}
                     >
-                      Learn more
+                      Learn about {project.title?.replace(/\s*-.*$/, '') || project.title}
                       <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                     </Button>
                   </Link>

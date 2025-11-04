@@ -63,7 +63,6 @@ jobs:
   build-preview-docker:
     name: Build and Push Preview Docker Image
     runs-on: ubuntu-latest
-    needs: build-static-site
     
     steps:
       - name: Checkout code

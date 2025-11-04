@@ -1,6 +1,13 @@
-# LeadCMS Portfolio Site
+# LeadCMS + Next.js Portfolio Demo
 
-This is a personal portfolio website built with Next.js and LeadCMS, demonstrating the separation of content from presentation.
+**A demonstration project showcasing Next.js static site integration with LeadCMS headless CMS.**
+
+This portfolio site for CTO Peter L. serves as a practical example of how to:
+- ✅ Build a static Next.js site powered by LeadCMS
+- ✅ Separate content (MDX/JSON) from presentation (React components)
+- ✅ Use MDX components for rich, editable content
+- ✅ Deploy as a fully static site with zero runtime dependencies
+- ✅ Set up CI/CD with GitHub Actions and Docker
 
 ## Architecture
 
@@ -44,7 +51,7 @@ The following components are available in MDX files:
 
 - `pnpm run dev` - Start development server
 - `pnpm run build` - Build for production (includes content fetch)
-- `pnpm run fetch` - Fetch latest content from LeadCMS
+- `pnpm run pull` - Fetch latest content from LeadCMS
 - `pnpm run start` - Start production server
 
 ## Environment Variables
@@ -53,9 +60,11 @@ Required environment variables in `.env`:
 
 ```bash
 LEADCMS_API_KEY=your-api-key
-LEADCMS_URL=https://cms.liapin.space
+LEADCMS_URL=https://your-leadcms-instance.com
 LEADCMS_DEFAULT_LANGUAGE=en
 ```
+
+**Note:** This demo uses `https://cms.liapin.space` as the LeadCMS instance.
 
 ## Static Export
 
@@ -122,10 +131,32 @@ This will:
 
 The site can be deployed to any static hosting service:
 
-- Vercel (recommended)
+- Vercel
 - Netlify
-- GitHub Pages
 - AWS S3 + CloudFront
 - Any web server (nginx, Apache, etc.)
 
 The `out/` directory contains all static files ready to be served.
+
+## About This Demo
+
+This project demonstrates:
+
+1. **LeadCMS Integration** - Content managed in LeadCMS, synced via SDK
+2. **Static Generation** - Full static export with `output: "export"`
+3. **MDX Components** - Rich content composition with custom React components
+4. **Template System** - Different layouts for different content types
+5. **CI/CD Pipeline** - Automated builds and Docker images with GitHub Actions
+6. **Best Practices** - No hardcoded content, fail-fast builds, semantic components
+
+**Live Site:** https://liapin.space (Portfolio of CTO Peter L.)
+
+## Learn More
+
+- [LeadCMS Documentation](https://leadcms.ai/docs/)
+- [Next.js Static Exports](https://nextjs.org/docs/app/building-your-application/deploying/static-exports)
+- [MDX Documentation](https://mdxjs.com/)
+
+## License
+
+This demo project is open source and available for learning purposes.

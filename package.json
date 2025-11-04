@@ -1,7 +1,22 @@
 {
-  "name": "liapin-space-site",
+  "name": "leadcms-nextjs-portfolio-demo",
   "version": "1.0.0",
+  "description": "Demo CTO portfolio site showcasing Next.js integration with LeadCMS",
   "private": true,
+  "author": "Peter L.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LeadCMS/nextjs-portfolio-demo.git"
+  },
+  "keywords": [
+    "leadcms",
+    "nextjs",
+    "portfolio",
+    "headless-cms",
+    "static-site",
+    "mdx",
+    "demo"
+  ],
   "scripts": {
     "pull": "leadcms pull",
     "watch": "leadcms watch",
@@ -11,10 +26,10 @@
     "dev": "next dev",
     "lint": "eslint .",
     "start": "next start",
-    "docker:build": "pnpm run build && docker build -t liapin_space_site .",
-    "docker:run": "docker container rm liapin_space_site --force || true && docker run -p 3000:80 --env-file .env --name liapin_space_site liapin_space_site",
-    "docker:preview:build": "docker build -f preview/Dockerfile -t liapin_space_site_preview .",
-    "docker:preview:run": "docker container rm liapin_space_site_preview --force || true && docker run -p 3000:80 --name liapin_space_site_preview --env-file .env liapin_space_site_preview"
+    "docker:build": "pnpm run build && docker build -t leadcms-portfolio-demo .",
+    "docker:run": "docker container rm leadcms-portfolio-demo --force || true && docker run -p 3000:80 --env-file .env --name leadcms-portfolio-demo leadcms-portfolio-demo",
+    "docker:preview:build": "docker build -f preview/Dockerfile -t leadcms-portfolio-preview .",
+    "docker:preview:run": "docker container rm leadcms-portfolio-preview --force || true && docker run -p 3000:80 --name leadcms-portfolio-preview --env-file .env leadcms-portfolio-preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

@@ -5,7 +5,12 @@
 # Usage from project root:
 # 1. Build your static site to 'out' or 'dist' directory
 # 2. docker build -t my-leadcms-site .
-# 3. docker run -p 80:80 my-leadcms-site
+# 3. docker run -p 80:80 -e NEXT_PUBLIC_LEADCMS_URL=https://cms.example.com my-leadcms-site
+#
+# Runtime Environment Injection:
+# - NEXT_PUBLIC_* env vars are injected at container startup
+# - Allows the same image to work with different LeadCMS instances
+# - Required for client-side features like contact forms
 
 FROM nginx:alpine
 

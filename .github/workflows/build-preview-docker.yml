@@ -1,0 +1,83 @@
+name: Build Preview Docker
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+
+env:
+  PREVIEW_IMAGE: leadcms/nextjs-cto-portfolio-preview
+
+jobs:
+  build-preview-docker:
+    name: Build and Push Preview Docker Image
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.PREVIEW_IMAGE }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push preview Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./preview/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          build-args: |
+            LEADCMS_URL=${{ secrets.LEADCMS_URL }}
+            LEADCMS_DEFAULT_LANGUAGE=${{ secrets.LEADCMS_DEFAULT_LANGUAGE || 'en' }}
+          cache-from: type=registry,ref=${{ env.PREVIEW_IMAGE }}:buildcache
+          cache-to: type=registry,ref=${{ env.PREVIEW_IMAGE }}:buildcache,mode=max
+
+      - name: Upload Docker build summary
+        run: |
+          echo "## 🔄 Preview Docker Image Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment Approach:** Live Preview Environment (Development Server)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "This workflow builds a development preview environment with live content updates." >> $GITHUB_STEP_SUMMARY
+          echo "Perfect for preview/staging environments with real-time content synchronization from LeadCMS." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Docker Image Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Registry:** Docker Hub" >> $GITHUB_STEP_SUMMARY
+          echo "- **Image:** ${{ env.PREVIEW_IMAGE }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Size:** ~400-500MB" >> $GITHUB_STEP_SUMMARY
+          echo "- **Includes:** Next.js dev server, nginx, LeadCMS watch mode" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Tags" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🚀 Usage" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "docker pull ${{ env.PREVIEW_IMAGE }}:${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "docker run -p 80:80 \\" >> $GITHUB_STEP_SUMMARY
+          echo "  -e LEADCMS_URL=https://your-cms-name.leadcms.ai \\" >> $GITHUB_STEP_SUMMARY
+          echo "  -e LEADCMS_API_KEY=your-api-key \\" >> $GITHUB_STEP_SUMMARY
+          echo "  ${{ env.PREVIEW_IMAGE }}:${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Note:** LEADCMS_API_KEY is required for live watch mode (real-time content updates)." >> $GITHUB_STEP_SUMMARY

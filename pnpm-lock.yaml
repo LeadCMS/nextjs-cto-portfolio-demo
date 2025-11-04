@@ -12,8 +12,8 @@ importers:
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.66.0(react@19.2.0))
       '@leadcms/sdk':
-        specifier: ^2.2.3
-        version: 2.2.3
+        specifier: ^2.2.4
+        version: 2.2.4
       '@next/mdx':
         specifier: ^16.0.1
         version: 16.0.1(@mdx-js/react@3.1.1(@types/react@19.2.2)(react@19.2.0))
@@ -379,8 +379,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@leadcms/sdk@2.2.3':
-    resolution: {integrity: sha512-MwFAdYcu7Gn9byK0y54qIsqnBxqi8JgP3phnZdTbwS9hLTnvcXKZw4c727ZoTZEKdkcmBgNBLPvguvcp5pLPFQ==}
+  '@leadcms/sdk@2.2.4':
+    resolution: {integrity: sha512-SYEejCa5p0lt+3X6ikiMfh3opcho/RaG2h/t+j3qFE9sUKCbX0NDCZV6OCzK186/mWHefZ0pdyumr3FBWR3/uA==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
@@ -1307,8 +1307,8 @@ packages:
   bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
 
-  baseline-browser-mapping@2.8.23:
-    resolution: {integrity: sha512-616V5YX4bepJFzNyOfce5Fa8fDJMfoxzOIzDCZwaGL8MKVpFrXqfNUoIpRn9YMI5pXf/VKgzjB4htFMsFKKdiQ==}
+  baseline-browser-mapping@2.8.24:
+    resolution: {integrity: sha512-uUhTRDPXamakPyghwrUcjaGvvBqGrWvBHReoiULMIpOJVM9IYzQh83Xk2Onx5HlGI2o10NNCzcs9TG/S3TkwrQ==}
     hasBin: true
 
   browserslist@4.27.0:
@@ -2422,7 +2422,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@leadcms/sdk@2.2.3':
+  '@leadcms/sdk@2.2.4':
     dependencies:
       axios: 1.13.1
       diff: 8.0.2
@@ -3367,11 +3367,11 @@ snapshots:
 
   bail@2.0.2: {}
 
-  baseline-browser-mapping@2.8.23: {}
+  baseline-browser-mapping@2.8.24: {}
 
   browserslist@4.27.0:
     dependencies:
-      baseline-browser-mapping: 2.8.23
+      baseline-browser-mapping: 2.8.24
       caniuse-lite: 1.0.30001753
       electron-to-chromium: 1.5.244
       node-releases: 2.0.27

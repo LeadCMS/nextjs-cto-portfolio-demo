@@ -8,14 +8,15 @@ import { CMSContent } from "@leadcms/sdk"
 
 export interface ProjectTemplateProps {
   content: CMSContent
+  userUid?: string | null
 }
 
 /**
  * Template for project detail pages
  * Includes back navigation, badge, and external links
  */
-export default function ProjectTemplate({ content }: ProjectTemplateProps) {
-  const components = useMDXComponents({})
+export default function ProjectTemplate({ content, userUid }: ProjectTemplateProps) {
+  const components = useMDXComponents({ userUid })
 
   return (
     <div className="min-h-screen">

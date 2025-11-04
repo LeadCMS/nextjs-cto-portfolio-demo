@@ -1,18 +1,19 @@
-import { getAllContentSlugsForLocale, getCMSContentBySlugForLocale } from "@leadcms/sdk"
+import { getAllContentSlugsForLocale, getCMSContentBySlugForLocale, extractUserUidFromSlug } from "@leadcms/sdk"
 import { getTemplate } from "@/components/templates"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
 export function generateStaticParams() {
   const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
-  const slugs = getAllContentSlugsForLocale(locale)
   
-  // Filter out empty slug (homepage) and convert to slug parts
-  return slugs
-    .filter((slug) => slug !== "")
-    .map((slug) => ({
-      slug: slug.split("/"),
-    }))
+  // Get published content
+  const publishedSlugs = getAllContentSlugsForLocale(locale)
+    
+  const staticParams = publishedSlugs.map((slug) => ({
+    slug: slug.split("/"),
+  }))
+
+  return staticParams
 }
 
 interface PageProps {
@@ -25,7 +26,12 @@ export default async function Page({ params }: PageProps) {
   const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
   const resolvedParams = await params
   const slug = resolvedParams.slug.join("/")
-  const cmsContent = getCMSContentBySlugForLocale(slug, locale)
+  
+  // Extract userUid from slug if it's a preview slug (contains GUID pattern)
+  const userUid = extractUserUidFromSlug(slug)
+  const includeDrafts = !!userUid
+  
+  const cmsContent = getCMSContentBySlugForLocale(slug, locale, includeDrafts)
 
   if (!cmsContent) {
     throw new Error(
@@ -45,9 +51,9 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <>
-      <Header />
-      <Template content={cmsContent} />
-      <Footer />
+      <Header userUid={userUid} />
+      <Template content={cmsContent} userUid={userUid} />
+      <Footer userUid={userUid} />
     </>
   )
 }

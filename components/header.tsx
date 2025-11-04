@@ -1,7 +1,11 @@
 import Link from "next/link"
 import { loadContentConfigStrict } from "@leadcms/sdk"
 
-export function Header() {
+interface HeaderProps {
+  userUid?: string | null
+}
+
+export function Header({ userUid }: HeaderProps) {
   const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
   
   let config: {
@@ -10,10 +14,11 @@ export function Header() {
   }
   
   try {
-    config = loadContentConfigStrict("header", locale) as typeof config
+    config = loadContentConfigStrict("header", locale, userUid) as typeof config
   } catch (error) {
     throw new Error(
       `Header configuration not found. Please ensure header.json exists in .leadcms/content/ ` +
+      `${userUid ? `(checked for user-specific version: header-${userUid}.json) ` : ''}` +
       `or run 'npx leadcms pull' to sync content from LeadCMS.`
     )
   }

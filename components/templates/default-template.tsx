@@ -4,14 +4,15 @@ import { CMSContent } from "@leadcms/sdk"
 
 export interface TemplateProps {
   content: CMSContent
+  userUid?: string | null
 }
 
 /**
  * Default template for home and other content types
  * Renders full-width MDX content with proper prose styling
  */
-export default function DefaultTemplate({ content }: TemplateProps) {
-  const components = useMDXComponents({})
+export default function DefaultTemplate({ content, userUid }: TemplateProps) {
+  const components = useMDXComponents({ userUid })
 
   return (
     <div className="min-h-screen">

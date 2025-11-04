@@ -25,9 +25,9 @@ export default function Home() {
 
   return (
     <>
-      <Header />
-      <Template content={cmsContent} />
-      <Footer />
+      <Header userUid={null} />
+      <Template content={cmsContent} userUid={null} />
+      <Footer userUid={null} />
     </>
   )
 }

@@ -5,6 +5,7 @@ import { CMSContent } from "@leadcms/sdk"
 
 export type TemplateComponent = (props: { 
   content: CMSContent
+  userUid?: string | null
 }) => React.JSX.Element
 
 /**

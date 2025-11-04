@@ -1,0 +1,79 @@
+name: Deploy Static
+
+on:
+  workflow_run:
+    workflows: ["Build Static Artifact"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy-static:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    name: Deploy Static Site to Production Server
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Download static site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nextjs-cto-portfolio-static-main
+          path: ./static-site
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Create deployment archive
+        run: |
+          cd static-site
+          tar -czf ../nextjs-cto-portfolio-static-${{ github.ref_name }}.tar.gz .
+          cd ..
+          ls -la nextjs-cto-portfolio-static-${{ github.ref_name }}.tar.gz
+
+      - name: Upload deployment archive via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER_NAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "nextjs-cto-portfolio-static-${{ github.ref_name }}.tar.gz"
+          target: "${{ secrets.STATIC_TEMP_PATH }}"
+
+      - name: Deploy static site
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          DEPLOY_PATH: ${{ secrets.STATIC_DEPLOY_PATH }}
+          TEMP_PATH: ${{ secrets.STATIC_TEMP_PATH }}
+          BRANCH_NAME: ${{ github.ref_name }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER_NAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: DEPLOY_PATH,TEMP_PATH,BRANCH_NAME
+          script: |
+            # Remove all existing files and extract new ones
+            sudo rm -rf ${DEPLOY_PATH}/*;
+            sudo tar -xzf ${TEMP_PATH}/nextjs-cto-portfolio-static-${BRANCH_NAME}.tar.gz -C ${DEPLOY_PATH}/;
+            
+            # Clean up temp archive
+            rm -f ${TEMP_PATH}/nextjs-cto-portfolio-static-${BRANCH_NAME}.tar.gz;
+
+      - name: Deployment Summary
+        run: |
+          echo "## 🚀 Static Site Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment Type:** Static Files to Production Server" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Artifact:** nextjs-cto-portfolio-static-${{ github.ref_name }}.tar.gz" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment Method:** (SCP + SSH extraction)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### � Deployment Process" >> $GITHUB_STEP_SUMMARY
+          echo "1. **Archive Creation** - Packaged static files into deployment archive" >> $GITHUB_STEP_SUMMARY
+          echo "2. **File Transfer** - Uploaded archive to server via SCP" >> $GITHUB_STEP_SUMMARY  
+          echo "3. **Site Replacement** - Removed all existing files (rm -rf)" >> $GITHUB_STEP_SUMMARY
+          echo "4. **Content Extraction** - Extracted new files directly to deployment path" >> $GITHUB_STEP_SUMMARY
+          echo "5. **Cleanup** - Removed temporary deployment archive" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Deployment Status" >> $GITHUB_STEP_SUMMARY
+          echo "- **File Deployment:** ✅ Complete - All static files deployed successfully" >> $GITHUB_STEP_SUMMARY
+          echo "- **Site Replacement:** ✅ Clean - Previous version completely replaced" >> $GITHUB_STEP_SUMMARY
+          echo "- **Server Cleanup:** ✅ Done - No temporary files remaining" >> $GITHUB_STEP_SUMMARY

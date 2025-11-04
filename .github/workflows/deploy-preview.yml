@@ -1,0 +1,44 @@
+name: Deploy Preview
+
+on:
+  workflow_run:
+    workflows: ["Build Preview Docker"]
+    types: [completed]
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  deploy-preview:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    name: Deploy Preview Server via Docker Compose
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Deploy preview server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          DEPLOY_PATH: ${{ secrets.PREVIEW_DEPLOY_PATH }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER_NAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: DEPLOY_PATH
+          script: |
+            # Navigate to preview deployment directory and deploy
+            cd ${DEPLOY_PATH};
+            docker compose pull;
+            docker compose up -d;
+
+      - name: Deployment Summary
+        run: |
+          echo "## 🔄 Preview Server Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment Type:** Docker Compose Preview Environment" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Image:** leadcms/nextjs-cto-portfolio-preview:${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment Method:** (pull → down → up)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### � Deployment Process" >> $GITHUB_STEP_SUMMARY
+          echo "1. **Pull Images** - Downloaded latest Docker images from registry" >> $GITHUB_STEP_SUMMARY
+          echo "3. **Restart Services** - Launched new containers with updated images (docker compose up -d)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY

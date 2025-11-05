@@ -39,8 +39,8 @@ export default function ProjectTemplate({ content, userUid }: ProjectTemplatePro
             <Badge 
               className={`mb-4 text-xs sm:text-sm ${
                 content.badgeVariant === "primary" ? "bg-primary text-primary-foreground" :
-                content.badgeVariant === "accent" ? "bg-accent text-accent-foreground" :
-                content.badgeVariant === "chart-3" ? "bg-chart-3 text-foreground" :
+                content.badgeVariant === "chart-2" ? "bg-chart-2 text-chart-2-foreground" :
+                content.badgeVariant === "chart-3" ? "bg-chart-3 text-chart-3-foreground" :
                 ""
               }`}
             >
@@ -70,8 +70,8 @@ export default function ProjectTemplate({ content, userUid }: ProjectTemplatePro
               <Button 
                 className={`w-full sm:w-auto group cursor-pointer ${
                   content.badgeVariant === "primary" ? "bg-primary hover:bg-primary/90 text-primary-foreground" :
-                  content.badgeVariant === "accent" ? "bg-accent hover:bg-accent/90 text-accent-foreground" :
-                  content.badgeVariant === "chart-3" ? "bg-chart-3 hover:bg-chart-3/90 text-foreground" :
+                  content.badgeVariant === "chart-2" ? "bg-chart-2 hover:bg-chart-2/90 text-chart-2-foreground" :
+                  content.badgeVariant === "chart-3" ? "bg-chart-3 hover:bg-chart-3/90 text-chart-3-foreground" :
                   ""
                 }`}
               >

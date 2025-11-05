@@ -44,19 +44,19 @@ const variantClasses = {
     card: "group hover:border-primary/50 transition-all duration-300",
     iconBg: "bg-primary/10 group-hover:bg-primary/20",
     iconColor: "text-primary",
-    button: "text-primary hover:text-primary",
+    button: "text-primary hover:bg-primary/10 hover:text-primary",
   },
   "chart-2": {
     card: "group hover:border-chart-2/50 transition-all duration-300",
     iconBg: "bg-chart-2/10 group-hover:bg-chart-2/20",
     iconColor: "text-chart-2",
-    button: "text-chart-2 hover:text-chart-2",
+    button: "text-chart-2 hover:bg-chart-2/10 hover:text-chart-2",
   },
   "chart-3": {
     card: "group hover:border-chart-3/50 transition-all duration-300",
     iconBg: "bg-chart-3/10 group-hover:bg-chart-3/20",
     iconColor: "text-chart-3",
-    button: "text-chart-3 hover:text-chart-3",
+    button: "text-chart-3 hover:bg-chart-3/10 hover:text-chart-3",
   },
 }
 
@@ -92,7 +92,7 @@ export function DynamicProjectGrid({ title = "Featured Projects", maxProjects = 
   const displayProjects = projects.map((project: ProjectMetadata) => ({
     ...project,
     icon: getProjectIcon(project),
-    variant: (project.badgeVariant as "primary" | "accent" | "chart-3") || "primary"
+    variant: (project.badgeVariant as "primary" | "chart-2" | "chart-3") || "primary"
   }))
 
   return (
@@ -101,7 +101,7 @@ export function DynamicProjectGrid({ title = "Featured Projects", maxProjects = 
         <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 md:mb-8">{title}</h2>
       )}
       <div className="grid md:grid-cols-3 gap-4 md:gap-6">
-        {displayProjects.map((project: ProjectMetadata & { icon: string; variant: "primary" | "accent" | "chart-3" }) => {
+        {displayProjects.map((project: ProjectMetadata & { icon: string; variant: "primary" | "chart-2" | "chart-3" }) => {
           const IconComponent = iconMap[project.icon as keyof typeof iconMap]
           const classes = variantClasses[project.variant]
           

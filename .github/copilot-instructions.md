@@ -270,7 +270,7 @@ coverImageAlt: "Descriptive alt text for image"  # REQUIRED: Alt text for access
 
 **Required Fields (both MDX and JSON):**
 - ✅ **title** - Minimum 10 characters
-- ✅ **description** - Minimum 20 characters  
+- ✅ **description** - Minimum 20 characters, **MAXIMUM 155 characters for SEO optimization**
 - ✅ **slug** - Non-empty string (e.g., "home", "projects/my-project")
 - ✅ **type** - Content type identifier (e.g., "home", "project", "component")
 - ✅ **author** - Content author name
@@ -278,6 +278,10 @@ coverImageAlt: "Descriptive alt text for image"  # REQUIRED: Alt text for access
 - ✅ **publishedAt** - ISO 8601 date (omit for drafts)
 - ✅ **coverImageUrl** - Path to cover image (required by CMS database)
 - ✅ **coverImageAlt** - Alt text for cover image (required for accessibility)
+
+**Special Fields for Project Content Type:**
+- ✅ **excerpt** - Extended description for project cards (no length limit, used instead of `description` in UI)
+- 📝 **Note:** For `type: "project"`, the `description` field is used for SEO meta tags (max 155 chars), while `excerpt` is displayed in project cards and can be longer
 
 **Slug Requirements:**
 - ✅ **MANDATORY** - Every MDX file MUST have a non-empty slug

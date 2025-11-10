@@ -12,6 +12,7 @@ interface ProjectMetadata extends CMSContent {
   githubLink?: string
   category?: string
   tags?: string[]
+  excerpt?: string
 }
 
 interface DynamicProjectGridProps {
@@ -123,7 +124,7 @@ export function DynamicProjectGrid({ title = "Featured Projects", maxProjects = 
               </CardHeader>
               <CardContent className="pt-0 flex flex-col flex-1">
                 <div className="text-sm text-muted-foreground mb-4 leading-relaxed prose prose-sm max-w-none flex-1">
-                  {project.description}
+                  {project.excerpt || project.description}
                 </div>
                 <div className="mt-auto space-y-3">
                   {/* External links */}

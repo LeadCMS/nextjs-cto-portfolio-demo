@@ -14,6 +14,12 @@ interface ProjectCardProps {
   children: React.ReactNode
 }
 
+/**
+ * ProjectCard component for manual project cards in MDX
+ * Note: For dynamic project grids, use DynamicProjectGrid which automatically
+ * uses the 'excerpt' field from project metadata
+ */
+
 const iconMap = {
   Database,
   Code2,

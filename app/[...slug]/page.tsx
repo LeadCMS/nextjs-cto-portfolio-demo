@@ -34,9 +34,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   
   // Extract userUid from slug if it's a preview slug
   const userUid = extractUserUidFromSlug(slug)
-  const includeDrafts = !!userUid
   
-  const cmsContent = getCMSContentBySlugForLocale(slug, locale, includeDrafts)
+  // Draft handling is automatic based on NODE_ENV and userUid
+  const cmsContent = getCMSContentBySlugForLocale(slug, locale, userUid)
   
   if (!cmsContent) {
     return {}
@@ -53,9 +53,9 @@ export default async function Page({ params }: PageProps) {
   
   // Extract userUid from slug if it's a preview slug (contains GUID pattern)
   const userUid = extractUserUidFromSlug(slug)
-  const includeDrafts = !!userUid
   
-  const cmsContent = getCMSContentBySlugForLocale(slug, locale, includeDrafts)
+  // Draft handling is automatic based on NODE_ENV and userUid
+  const cmsContent = getCMSContentBySlugForLocale(slug, locale, userUid)
 
   if (!cmsContent) {
     throw new Error(

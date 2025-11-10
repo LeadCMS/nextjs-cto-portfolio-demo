@@ -131,17 +131,27 @@ This project uses the official `@leadcms/sdk` package for all content access. **
 import { 
   getCMSContentBySlugForLocale,
   getAllContentSlugsForLocale,
+  getAllContentForLocale,
   getAllContentRoutes,
   loadContentConfigStrict 
 } from '@leadcms/sdk'
 
-// Get content by slug
+// Get content by slug (with optional userUid for draft preview)
 const content = getCMSContentBySlugForLocale('about', 'en')
+const contentWithDraft = getCMSContentBySlugForLocale('about', 'en', userUid)
 // Returns: { metadata: {...}, body: "..." }
 
 // Get all slugs for a locale (for static generation)
 const slugs = getAllContentSlugsForLocale('en')
+const slugsForType = getAllContentSlugsForLocale('en', ['project'])
+const slugsWithDrafts = getAllContentSlugsForLocale('en', ['project'], userUid)
 // Returns: ['', 'projects/xltools', 'projects/leadcms', ...]
+
+// Get all content objects directly (optimized - v3.0+)
+// Instead of fetching slugs then looping to get content, use this:
+const allProjects = getAllContentForLocale('en', ['project'])
+const allProjectsWithDrafts = getAllContentForLocale('en', ['project'], userUid)
+// Returns: [{ slug: 'projects/xltools', title: '...', body: '...', ... }, ...]
 
 // Get all routes (multi-locale sites)
 const routes = getAllContentRoutes()
@@ -150,6 +160,34 @@ const routes = getAllContentRoutes()
 // Load JSON configuration files
 const config = loadContentConfigStrict('header', 'en')
 // Loads .leadcms/content/header.json (or header.en.json)
+```
+
+### Environment-Based Draft Handling (v3.0+)
+
+**Draft handling is automatic based on your environment:**
+
+- ✅ **Development Mode** (`NODE_ENV=development`): Drafts included when `userUid` is provided
+- ✅ **Production Mode** (`NODE_ENV=production`): Only published content
+- ✅ **Override**: Set `LEADCMS_PREVIEW=false` to force disable drafts
+- ✅ **Override**: Set `LEADCMS_PREVIEW=true` to force enable drafts
+
+**No more `includeDrafts` boolean parameters!** The SDK v3.0+ uses environment detection:
+
+```typescript
+// ❌ REMOVED in v3.0 - This no longer exists:
+getCMSContentBySlugForLocaleWithDraftSupport(slug, locale, userUid, true)
+
+// ✅ v3.0+ - Environment-based draft handling:
+getCMSContentBySlugForLocale(slug, locale, userUid)
+// Automatically shows drafts in development mode when userUid is provided
+```
+
+**Function Signatures (v3.0+):**
+```typescript
+getCMSContentBySlugForLocale(slug, locale?, userUid?)
+getAllContentSlugsForLocale(locale?, contentTypes?, userUid?)
+getAllContentForLocale(locale?, contentTypes?, userUid?)
+getAllContentRoutes(contentTypes?, userUid?)
 ```
 
 ### Getting the Locale
@@ -303,6 +341,8 @@ coverImageAlt: "Descriptive alt text for image"  # REQUIRED: Alt text for access
 4. **Error handling** - Provide helpful error messages with sync instructions
 5. **Build-time only** - All SDK calls happen during build, not at runtime
 6. **Always add publishedAt** - Content without `publishedAt` will not be visible
+7. **Environment-based drafts (v3.0+)** - Draft handling is automatic based on `NODE_ENV`, no `includeDrafts` boolean needed
+8. **Use getAllContentForLocale (v3.0+)** - For fetching multiple content items, use this instead of looping through slugs
 
 ## MDX Component Design Principles
 
@@ -844,6 +884,8 @@ LEADCMS_DEFAULT_LANGUAGE=en
 6. **Structure over URLs** - Design content types by structure, not URL patterns
 7. **Standard types first** - Use standard content types before creating custom ones
 8. **Static export compatible** - No server-side features, all logic must work at build time
+9. **Environment-based drafts (v3.0+)** - Use `userUid` parameter only, no `includeDrafts` boolean
+10. **Use getAllContentForLocale** - Optimize multiple content fetching with v3.0+ function
 
 ## Package Manager
 

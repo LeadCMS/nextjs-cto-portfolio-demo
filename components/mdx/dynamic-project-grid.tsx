@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react"
 import { Database, Code2, Wrench } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { getAllContentSlugsForLocale, getCMSContentBySlugForLocaleWithDraftSupport, getConfig, type CMSContent } from "@leadcms/sdk"
+import { getAllContentForLocale, getConfig, type CMSContent } from "@leadcms/sdk"
 
 interface ProjectMetadata extends CMSContent {
   badge?: string
@@ -65,21 +65,9 @@ export function DynamicProjectGrid({ title = "Featured Projects", maxProjects = 
   const sdkConfig = getConfig()
   const locale = sdkConfig.defaultLanguage
   
-  // Get all content slugs filtered by project type, including drafts if userUid is provided
-  const includeDrafts = !!userUid
-  const allSlugs = getAllContentSlugsForLocale(locale, ["project"], includeDrafts, userUid)
-  
-  // Get content for each project slug
-  const allProjects: ProjectMetadata[] = allSlugs
-    .map(slug => {
-      const content = getCMSContentBySlugForLocaleWithDraftSupport(slug, locale, userUid, includeDrafts)
-      if (userUid && content) {
-        console.log(`Loaded project: ${slug} - ${content.title}`)
-      }
-      return content
-    })
-    .filter((content): content is CMSContent => content !== null)
-    .filter(content => content.type === "project") as ProjectMetadata[]
+  // Get all project content directly (optimized v3.0 approach)
+  // Draft handling is automatic based on NODE_ENV and userUid
+  const allProjects: ProjectMetadata[] = getAllContentForLocale(locale, ["project"], userUid) as ProjectMetadata[]
   
   // Sort projects by publishedAt (newest first) and then take the limit
   const projects = allProjects

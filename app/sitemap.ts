@@ -1,5 +1,5 @@
 import { type MetadataRoute } from "next";
-import { getAllContentSlugsForLocale } from "@leadcms/sdk";
+import { getAllContentSlugsForLocale, getConfig } from "@leadcms/sdk";
 import metadataJson from "@/.leadcms/content/metadata.json";
 import { pagesContentTypes } from "@/lib/constants";
 
@@ -11,7 +11,8 @@ const baseUrl = metadataJson.siteMetadata.baseUrl;
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en";
+  const sdkConfig = getConfig()
+  const locale = sdkConfig.defaultLanguage;
   
   // Get all published content slugs filtered by page content types only
   const allSlugs = getAllContentSlugsForLocale(locale, pagesContentTypes);

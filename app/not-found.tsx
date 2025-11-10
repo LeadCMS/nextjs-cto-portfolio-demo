@@ -1,4 +1,4 @@
-import { getCMSContentBySlugForLocale, type CMSContent } from "@leadcms/sdk"
+import { getCMSContentBySlugForLocale, getConfig } from "@leadcms/sdk"
 import { getTemplate } from "@/components/templates"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -8,7 +8,8 @@ import { Footer } from "@/components/footer"
  * Loads content from LeadCMS not-found.mdx file
  */
 export default function NotFound() {
-  const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
+  const sdkConfig = getConfig()
+  const locale = sdkConfig.defaultLanguage
   
   // Load not-found content from CMS - fail if missing
   const cmsContent = getCMSContentBySlugForLocale("not-found", locale)

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { loadContentConfigStrict } from "@leadcms/sdk"
+import { loadContentConfigStrict, getConfig } from "@leadcms/sdk"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 
 interface HeaderProps {
@@ -7,15 +7,16 @@ interface HeaderProps {
 }
 
 export function Header({ userUid }: HeaderProps) {
-  const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
+  const sdkConfig = getConfig()
+  const locale = sdkConfig.defaultLanguage
   
-  let config: {
+  let headerConfig: {
     logo: { text: string; href: string }
     navigation: Array<{ label: string; href: string }>
   }
   
   try {
-    config = loadContentConfigStrict("header", locale, userUid) as typeof config
+    headerConfig = loadContentConfigStrict("header", locale, userUid) as typeof headerConfig
   } catch (error) {
     throw new Error(
       `Header configuration not found. Please ensure header.json exists in .leadcms/content/ ` +
@@ -28,11 +29,11 @@ export function Header({ userUid }: HeaderProps) {
     <nav className="border-b border-border/40 backdrop-blur-sm sticky top-0 z-50 bg-background/80">
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
-          <Link href={config.logo.href} className="text-base md:text-lg font-semibold tracking-tight">
-            {config.logo.text}
+          <Link href={headerConfig.logo.href} className="text-base md:text-lg font-semibold tracking-tight">
+            {headerConfig.logo.text}
           </Link>
           <div className="flex items-center gap-4 md:gap-8">
-            {config.navigation.map((item: { label: string; href: string }) => (
+            {headerConfig.navigation.map((item: { label: string; href: string }) => (
               <Link
                 key={item.href}
                 href={item.href}

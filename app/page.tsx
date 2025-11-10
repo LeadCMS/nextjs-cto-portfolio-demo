@@ -1,12 +1,13 @@
 import type { Metadata } from "next"
-import { getCMSContentBySlugForLocale } from "@leadcms/sdk"
+import { getCMSContentBySlugForLocale, getConfig } from "@leadcms/sdk"
 import { generatePageMetadata } from "@/lib/metadata"
 import { getTemplate } from "@/components/templates"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
 export function generateMetadata(): Metadata {
-  const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
+  const sdkConfig = getConfig()
+  const locale = sdkConfig.defaultLanguage
   const cmsContent = getCMSContentBySlugForLocale("home", locale)
   
   if (!cmsContent) {
@@ -17,7 +18,8 @@ export function generateMetadata(): Metadata {
 }
 
 export default function Home() {
-  const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
+  const sdkConfig = getConfig()
+  const locale = sdkConfig.defaultLanguage
   const cmsContent = getCMSContentBySlugForLocale("home", locale)
   
   if (!cmsContent) {

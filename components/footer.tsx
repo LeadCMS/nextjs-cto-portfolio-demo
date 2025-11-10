@@ -1,20 +1,21 @@
-import { loadContentConfigStrict } from "@leadcms/sdk"
+import { loadContentConfigStrict, getConfig } from "@leadcms/sdk"
 
 interface FooterProps {
   userUid?: string | null
 }
 
 export function Footer({ userUid }: FooterProps) {
-  const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
+  const sdkConfig = getConfig()
+  const locale = sdkConfig.defaultLanguage
   
-  let config: {
+  let footerConfig: {
     text: string
     link: { text: string; href: string }
     suffix: string
   }
   
   try {
-    config = loadContentConfigStrict("footer", locale, userUid) as typeof config
+    footerConfig = loadContentConfigStrict("footer", locale, userUid) as typeof footerConfig
   } catch (error) {
     throw new Error(
       `Footer configuration not found. Please ensure footer.json exists in .leadcms/content/ ` +
@@ -26,17 +27,17 @@ export function Footer({ userUid }: FooterProps) {
   return (
     <footer className="border-t border-border/40 mt-12 md:mt-24">
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8">
-        <p className="text-xs md:text-sm text-muted-foreground">
-          {config.text}{" "}
+        <p className="text-sm text-muted-foreground">
+          {footerConfig.text}{" "}
           <a
-            href={config.link.href}
+            href={footerConfig.link.href}
+            className="hover:underline"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-foreground underline hover:no-underline transition-all"
           >
-            {config.link.text}
+            {footerConfig.link.text}
           </a>{" "}
-          {config.suffix}
+          {footerConfig.suffix}
         </p>
       </div>
     </footer>

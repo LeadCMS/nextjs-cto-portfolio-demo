@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react"
 import { Database, Code2, Wrench } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { getAllContentSlugsForLocale, getCMSContentBySlugForLocaleWithDraftSupport, type CMSContent } from "@leadcms/sdk"
+import { getAllContentSlugsForLocale, getCMSContentBySlugForLocaleWithDraftSupport, getConfig, type CMSContent } from "@leadcms/sdk"
 
 interface ProjectMetadata extends CMSContent {
   badge?: string
@@ -61,7 +61,8 @@ const variantClasses = {
 }
 
 export function DynamicProjectGrid({ title = "Featured Projects", maxProjects = 3, userUid }: DynamicProjectGridProps) {
-  const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
+  const sdkConfig = getConfig()
+  const locale = sdkConfig.defaultLanguage
   
   // Get all content slugs filtered by project type, including drafts if userUid is provided
   const includeDrafts = !!userUid

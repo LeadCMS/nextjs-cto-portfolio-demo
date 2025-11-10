@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { getAllContentSlugsForLocale, getCMSContentBySlugForLocale, extractUserUidFromSlug } from "@leadcms/sdk"
+import { getAllContentSlugsForLocale, getCMSContentBySlugForLocale, extractUserUidFromSlug, getConfig } from "@leadcms/sdk"
 import { generatePageMetadata } from "@/lib/metadata"
 import { getTemplate } from "@/components/templates"
 import { Header } from "@/components/header"
@@ -7,7 +7,8 @@ import { Footer } from "@/components/footer"
 import { pagesContentTypes } from "@/lib/constants"
 
 export function generateStaticParams() {
-  const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
+  const sdkConfig = getConfig()
+  const locale = sdkConfig.defaultLanguage
   
   // Get published content for page content types only (excludes components like header, footer, etc.)
   const publishedSlugs = getAllContentSlugsForLocale(locale, pagesContentTypes)
@@ -26,7 +27,8 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
+  const sdkConfig = getConfig()
+  const locale = sdkConfig.defaultLanguage
   const resolvedParams = await params
   const slug = resolvedParams.slug.join("/")
   
@@ -44,7 +46,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function Page({ params }: PageProps) {
-  const locale = process.env.LEADCMS_DEFAULT_LANGUAGE || process.env.NEXT_PUBLIC_LEADCMS_DEFAULT_LANGUAGE || "en"
+  const sdkConfig = getConfig()
+  const locale = sdkConfig.defaultLanguage
   const resolvedParams = await params
   const slug = resolvedParams.slug.join("/")
   
